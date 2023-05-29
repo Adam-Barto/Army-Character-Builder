@@ -14,3 +14,26 @@ Stats = {
              }]
 }
 
+
+# dev_stats =
+
+class Character:
+
+    def __init__(self):
+        self.Stats = Stats
+        self.MAX_POINTS = MAX_POINTS
+        self.Spent_Points = 0
+
+    def load(self, data):
+        self.Stats = data
+
+    def check(self):
+        spent = 0
+        for stat in Stats.values():
+            for stat2 in stat[1].values():
+                for stat3 in stat2[1].values():
+                    spent = spent + stat3
+        return spent == self.MAX_POINTS
+
+
+
