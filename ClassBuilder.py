@@ -18,12 +18,20 @@ Stats = {
 }
 
 
-# dev_stats =
-
+# 1              2              3
 class Character:
 
+    def build_control_list(self): # This makes us have an easy to manipulate list.
+        # core_holder = {}
+        dev_holder = {}
+        for stat in Stats.values():
+            for stat2 in stat[1].values():
+                for (key, value) in zip(stat2[1].keys(), stat2[1].values()):
+                    dev_holder.update({key: value})
+        return dev_holder
+
     def __init__(self):
-        self.Stats = Stats
+        self.Stats = self.build_control_list()
         self.MAX_POINTS = MAX_POINTS
         self.Spent_Points = 0
 
@@ -31,11 +39,7 @@ class Character:
         self.Stats = data
 
     def check(self):
-        spent = 0
-        for stat in Stats.values():
-            for stat2 in stat[1].values():
-                for stat3 in stat2[1].values():
-                    spent = spent + stat3
+        spent = sum(self.Stats.values())
         return spent == self.MAX_POINTS
 
 
@@ -44,7 +48,7 @@ class Interface:
         self.body_display.configure(text=str(self.body_and_mind_scale.get()))
         self.mind_display.configure(text=str(MAX_POINTS - self.body_and_mind_scale.get()))
 
-    def events(self):
+    def event_connection(self):
         self.body_and_mind_scale.bind('<B1-Motion>', self.body_and_mind_scale_action)
 
     def __init__(self):  # menu, body_display, body_and_mind_scale, mind_display
@@ -66,4 +70,4 @@ class Interface:
         self.mind_display.grid(row=3, column=2)
         self.name.grid(row=0, column=1)
         self.army.grid(row=1, column=1)
-        self.events()
+        self.event_connection()
