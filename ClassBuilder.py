@@ -1,4 +1,5 @@
 import tkinter as tk
+from bindings import *
 
 MAX_POINTS = 30
 Stats = {
@@ -39,6 +40,13 @@ class Character:
 
 
 class Interface:
+    def body_and_mind_scale_action(self, value=None):
+        self.body_display.configure(text=str(self.body_and_mind_scale.get()))
+        self.mind_display.configure(text=str(MAX_POINTS - self.body_and_mind_scale.get()))
+
+    def events(self):
+        self.body_and_mind_scale.bind('<B1-Motion>', self.body_and_mind_scale_action)
+
     def __init__(self):  # menu, body_display, body_and_mind_scale, mind_display
         self.menu = tk.Tk()
         self.body_display = tk.Label(self.menu, text=0)
@@ -58,3 +66,4 @@ class Interface:
         self.mind_display.grid(row=3, column=2)
         self.name.grid(row=0, column=1)
         self.army.grid(row=1, column=1)
+        self.events()

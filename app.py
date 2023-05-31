@@ -1,7 +1,5 @@
 import ClassBuilder
 
-
-
 character = ClassBuilder.Character()
 
 print(character.Stats)
