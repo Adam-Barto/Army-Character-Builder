@@ -16,10 +16,12 @@ Stats = {
 # 1              2              3
 
 
-def build_control_list(): # This makes us have an easy to manipulate list.
+def build_control_list(data=None):  # This makes us have an easy to manipulate list.
     # core_holder = {}
+    if data is None:
+        data = Stats
     dev_holder = {}
-    for stat in Stats.values():
+    for stat in data.values():
         for stat2 in stat[1].values():
             for (key, value) in zip(stat2[1].keys(), stat2[1].values()):
                 dev_holder.update({key: value})

@@ -10,7 +10,7 @@ class Character:
         self.Spent_Points = 0
 
     def load(self, data):
-        self.Stats = data
+        self.Stats = build_control_list(data)
 
     def check(self):
         spent = sum(self.Stats.values())
