@@ -2,11 +2,11 @@ import ClassBuilder
 
 
 
-character = characterBuilder.Character()
+character = ClassBuilder.Character()
 
 print(character.Stats)
 print(character.check())
 
-gui = characterBuilder.Interface()
+gui = ClassBuilder.Interface()
 
 gui.menu.mainloop()
