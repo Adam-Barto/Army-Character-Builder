@@ -16,6 +16,10 @@ class Character:
         spent = sum(self.Stats.values())
         return spent == self.MAX_POINTS
 
+class JSONHandler:
+    def printout(self, data=None):
+        print(data)
+
 
 class Interface:
     def slider_action(self, value=None, items=None):
@@ -33,7 +37,7 @@ class Interface:
         display_2 = tk.Label(self.menu, text=1)
         display_1.grid(row=(row + 1))
         display_2.grid(row=(row + 1), column=2)
-        scale = tk.Scale(self.menu, from_=1, to=6, orient=tk.HORIZONTAL, showvalue=False)
+        scale = tk.Scale(self.menu, from_=1, to=5, orient=tk.HORIZONTAL, showvalue=False)
         scale.grid(row=row, column=1)
 
         def binding(value=None):
@@ -43,7 +47,7 @@ class Interface:
 
         scale.bind('<B1-Motion>', binding)
 
-    def __init__(self):  # menu, body_display, body_and_mind_scale, mind_display
+    def __init__(self):
         self.menu = tk.Tk()
         self.body_display = tk.Label(self.menu, text=1)
         self.mind_display = tk.Label(self.menu, text=24)
@@ -71,3 +75,7 @@ class Interface:
         self.construct_sliders(names_stats=["Recall", "Deduction"], row=10)
         self.construct_sliders(names_stats=["Understanding", "Faith"], row=12)
         self.construct_sliders(names_stats=["Urge", "Instinct"], row=14)
+        self.button = tk.Button(self.menu, text="Print Json")
+        self.button.grid(row=16)
+        self.json_handler = JSONHandler
+        self.button.bind('<Button-1>', self.json_handler.printout)
