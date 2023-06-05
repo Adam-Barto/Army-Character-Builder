@@ -6,7 +6,8 @@ class Character:
     def __init__(self):
         self.Stats = build_control_list()
         self.MAX_POINTS = MAX_POINTS
-        self.Spent_Points = 12
+        self.Spent_Points = 0
+        self.count()
 
     def load(self, data):
         self.Stats = build_control_list(data)
@@ -15,12 +16,12 @@ class Character:
         spent = sum(self.Stats.values())
         return spent == self.MAX_POINTS
 
+    def count(self):
+        self.Spent_Points = sum(self.Stats.values())
+
     def set_value(self, stat, value):
-        if self.Stats[stat] < value:
-            self.Spent_Points = self.Spent_Points + 1
-        elif self.Stats[stat] > value:
-            self.Spent_Points = self.Spent_Points - 1
         self.Stats[stat] = value
+        self.count()
 
 
 class Interface(Character):
@@ -30,18 +31,23 @@ class Interface(Character):
     def construct_spinbox(self, name=None, row=0, column=0):
         tk.Label(self.menu, text=name).grid(row=row, column=column)
         current_value = tk.StringVar(value='1')
+
         def value_changed(mouse=None):
-            self.set_value(name, int(current_value.get()))
+            current = int(current_value.get())
+            # if current > int(spin_box['to']):
+            #     spin_box['textvariable'] = str(int(spin_box['to']))
+            #     current = int(spin_box['textvariable'])
+            self.set_value(name, current)
             self.point_spent.configure(text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
-            # spin_box.configure(to=self.MAX_POINTS - self.Spent_Points)
 
         spin_box = tk.Spinbox(self.menu,
                               from_=1,
-                              to=self.MAX_POINTS - self.Spent_Points+1,
+                              to=self.MAX_POINTS,
                               textvariable=current_value,
                               command=value_changed
                               )
         spin_box.grid(row=row, column=column + 1)
+        spin_box.bind('<Return>', value_changed)
         spin_box.bind('<Enter>', value_changed)
         return spin_box
 
