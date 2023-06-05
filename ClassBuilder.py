@@ -5,9 +5,10 @@ from functions import *
 class Character:
     def __init__(self):
         self.Stats = build_control_list()
+        self.BaseStats = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+        self.CoreStats = ["Body", "Mind"]
         self.MAX_POINTS = MAX_POINTS
-        self.Spent_Points = 0
-        self.count()
+        self.Spent_Points = sum(self.Stats.values())
 
     def load(self, data):
         self.Stats = build_control_list(data)
@@ -16,17 +17,30 @@ class Character:
         spent = sum(self.Stats.values())
         return spent == self.MAX_POINTS
 
+
+class Interface(Character):
+    def data_handler(self, mouse):
+        print(self.Stats)
+
     def count(self):
         self.Spent_Points = sum(self.Stats.values())
+        indexer = 0
+        for counter, values in enumerate(list(self.Stats.values())):
+            if counter % 2 == 0:
+                self.base_list[indexer]['text'] = sum([list(self.Stats.values())[counter], list(self.Stats.values())[counter+1]])
+                indexer = indexer + 1
+        self.core_list[0]['text'] = sum([x for c, x in enumerate(list(self.Stats.values())) if c < 6])
+        self.core_list[1]['text'] = sum([x for c, x in enumerate(list(self.Stats.values())) if c > 5])
 
     def set_value(self, stat, value):
         self.Stats[stat] = value
         self.count()
 
-
-class Interface(Character):
-    def data_handler(self, mouse):
-        print(self.Stats)
+    def construct_stats(self, name=None, row=0, column=0):
+        tk.Label(self.menu, text=name).grid(row=row, column=column)
+        text = tk.Label(self.menu, text=0)
+        text.grid(row=row + 1, column=column)
+        return text
 
     def construct_spinbox(self, name=None, row=0, column=0):
         tk.Label(self.menu, text=name).grid(row=row, column=column)
@@ -67,8 +81,19 @@ class Interface(Character):
         self.point_spent.grid(row=2, column=0)
 
         self.spinbox_list = []
+        self.base_list = []
+        self.core_list = []
         for index, name in enumerate(self.Stats.keys()):
-            self.spinbox_list.append(self.construct_spinbox(name=name, row=index + 3))
+            self.spinbox_list.append(self.construct_spinbox(name=name, row=index + 3, column=2))
+        index_seperation = 0
+        for name in self.BaseStats:
+            self.base_list.append(self.construct_stats(name=name, row=index_seperation + 3, column=1))
+            index_seperation = index_seperation + 2
+        index_seperation = 0
+
+        for name in self.CoreStats:
+            self.core_list.append(self.construct_stats(name=name, row=index_seperation + 3, column=0))
+            index_seperation = index_seperation + 6
 
         self.button = tk.Button(self.menu, text="Print Json")
         self.button.grid(row=16)
