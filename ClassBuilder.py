@@ -69,16 +69,16 @@ class Interface(Character):
     def __init__(self):
         super().__init__()
         self.menu = tk.Tk()
-        self.name = tk.Entry(self.menu)
-        self.army = tk.Entry(self.menu)
-        self.point_spent = tk.Label(self.menu, text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
+        self.name = tk.Entry(self.menu, font=("Arial", 14))
+        self.army = tk.Entry(self.menu, font=("Arial", 14))
+        self.point_spent = tk.Label(self.menu,font=("Arial", 14), text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
 
         self.menu.title('Quest')
         # Making a Window
-        tk.Label(self.menu, text='Name: ').grid(row=0)
-        tk.Label(self.menu, text='Army Name: ').grid(row=1)
+        tk.Label(self.menu, text='Name: ', font=("Arial", 14)).grid(row=0)
+        tk.Label(self.menu, text='Army Name: ', font=("Arial", 14)).grid(row=0, column=2)
         self.name.grid(row=0, column=1)
-        self.army.grid(row=1, column=1)
+        self.army.grid(row=0, column=3)
         self.point_spent.grid(row=2, column=0)
 
         self.spinbox_list = []
