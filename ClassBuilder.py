@@ -24,6 +24,11 @@ class Interface(Character):
 
     def count(self):
         self.Spent_Points = sum(self.Stats.values())
+        self.point_spent.configure(text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
+        if self.Spent_Points > self.MAX_POINTS:
+            self.point_spent.configure(fg="Red")
+        else:
+            self.point_spent.configure(fg="Black")
         indexer = 0
         for counter, values in enumerate(list(self.Stats.values())):
             if counter % 2 == 0:
@@ -52,7 +57,6 @@ class Interface(Character):
             #     spin_box['textvariable'] = str(int(spin_box['to']))
             #     current = int(spin_box['textvariable'])
             self.set_value(name, current)
-            self.point_spent.configure(text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
 
         spin_box = tk.Spinbox(self.menu,
                               from_=1,
