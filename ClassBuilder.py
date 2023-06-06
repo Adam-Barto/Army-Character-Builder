@@ -37,13 +37,13 @@ class Interface(Character):
         self.count()
 
     def construct_stats(self, name=None, row=0, column=0):
-        tk.Label(self.menu, text=name).grid(row=row, column=column)
-        text = tk.Label(self.menu, text=0)
+        tk.Label(self.menu, text=name, font=("Arial", 14)).grid(row=row, column=column)
+        text = tk.Label(self.menu, text=0, font=("Arial", 14))
         text.grid(row=row + 1, column=column)
         return text
 
     def construct_spinbox(self, name=None, row=0, column=0):
-        tk.Label(self.menu, text=name).grid(row=row, column=column)
+        tk.Label(self.menu, text=name, font=("Arial", 14)).grid(row=row, column=column)
         current_value = tk.StringVar(value='1')
 
         def value_changed(mouse=None):
@@ -58,9 +58,10 @@ class Interface(Character):
                               from_=1,
                               to=self.MAX_POINTS,
                               textvariable=current_value,
-                              command=value_changed
+                              command=value_changed,
+                              font=("Arial", 14)
                               )
-        spin_box.grid(row=row, column=column + 1)
+        spin_box.grid(row=row, column=column +1 , ipadx=5, ipady=5, pady=5, padx=5)
         spin_box.bind('<Return>', value_changed)
         spin_box.bind('<Enter>', value_changed)
         return spin_box
