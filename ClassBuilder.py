@@ -7,6 +7,7 @@ class Character:
         self.Stats = build_control_list()
         self.BaseStats = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
         self.CoreStats = ["Body", "Mind"]
+        self.ArmyStats = ["Infantry", "Beast", "Heavy", "Healer", "Casters", "Artillery", "Fortifications"]
         self.MAX_POINTS = MAX_POINTS
         self.Spent_Points = sum(self.Stats.values())
 
@@ -22,7 +23,7 @@ class Interface(Character):
     def data_handler(self, mouse):
         print(self.Stats)
 
-    def count(self):
+    def count_and_visual_change(self):
         self.Spent_Points = sum(self.Stats.values())
         self.point_spent.configure(text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
         if self.Spent_Points > self.MAX_POINTS:
@@ -36,10 +37,12 @@ class Interface(Character):
                 indexer = indexer + 1
         self.core_list[0]['text'] = sum([x for c, x in enumerate(list(self.Stats.values())) if c < 6])
         self.core_list[1]['text'] = sum([x for c, x in enumerate(list(self.Stats.values())) if c > 5])
+        for counter, values in enumerate(self.ArmyStats):
+            self.army_list[counter]['text'] = sum([self.Stats[value] for value in Army_Calculation[values]])
 
     def set_value(self, stat, value):
         self.Stats[stat] = value
-        self.count()
+        self.count_and_visual_change()
 
     def construct_stats(self, name=None, row=0, column=0):
         tk.Label(self.menu, text=name, font=("Arial", 14)).grid(row=row, column=column)
@@ -88,17 +91,22 @@ class Interface(Character):
         self.spinbox_list = []
         self.base_list = []
         self.core_list = []
+        self.army_list = []
         for index, name in enumerate(self.Stats.keys()):
             self.spinbox_list.append(self.construct_spinbox(name=name, row=index + 3, column=2))
-        index_seperation = 0
+        visual_seperation = 0
         for name in self.BaseStats:
-            self.base_list.append(self.construct_stats(name=name, row=index_seperation + 3, column=1))
-            index_seperation = index_seperation + 2
-        index_seperation = 0
+            self.base_list.append(self.construct_stats(name=name, row=visual_seperation + 3, column=1))
+            visual_seperation = visual_seperation + 2
+        visual_seperation = 0
 
         for name in self.CoreStats:
-            self.core_list.append(self.construct_stats(name=name, row=index_seperation + 3, column=0))
-            index_seperation = index_seperation + 6
+            self.core_list.append(self.construct_stats(name=name, row=visual_seperation + 3, column=0))
+            visual_seperation = visual_seperation + 6
+        visual_seperation = 0
+        for name in self.ArmyStats:
+            self.army_list.append(self.construct_stats(name=name, row=visual_seperation + 3, column=4))
+            visual_seperation = visual_seperation + 2
 
         self.button = tk.Button(self.menu, text="Print Json")
         self.button.grid(row=16)
