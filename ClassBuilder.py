@@ -33,7 +33,8 @@ class Interface(Character):
         indexer = 0
         for counter, values in enumerate(list(self.Stats.values())):
             if counter % 2 == 0:
-                self.base_list[indexer]['text'] = sum([list(self.Stats.values())[counter], list(self.Stats.values())[counter+1]])
+                self.base_list[indexer]['text'] = sum(
+                    [list(self.Stats.values())[counter], list(self.Stats.values())[counter + 1]])
                 indexer = indexer + 1
         self.core_list[0]['text'] = sum([x for c, x in enumerate(list(self.Stats.values())) if c < 6])
         self.core_list[1]['text'] = sum([x for c, x in enumerate(list(self.Stats.values())) if c > 5])
@@ -50,13 +51,16 @@ class Interface(Character):
         text.grid(row=row + 1, column=column)
         return text
 
+    def construct_text(self, name=None, row=0, column=0):
+        tk.Label(self.menu, text=name, font=("Arial", 12)).grid(row=row, column=column)
+
     def construct_spinbox(self, name=None, row=0, column=0):
         tk.Label(self.menu, text=name, font=("Arial", 14)).grid(row=row, column=column)
         current_value = tk.StringVar(value='1')
 
         def value_changed(mouse=None):
             current = int(current_value.get())
-            # if current > int(spin_box['to']):
+            # if current > int(spin_box['to']): # This is for making so the value can't be increased.
             #     spin_box['textvariable'] = str(int(spin_box['to']))
             #     current = int(spin_box['textvariable'])
             self.set_value(name, current)
@@ -68,7 +72,7 @@ class Interface(Character):
                               command=value_changed,
                               font=("Arial", 14)
                               )
-        spin_box.grid(row=row, column=column +1 , ipadx=5, ipady=5, pady=5, padx=5)
+        spin_box.grid(row=row, column=column + 1, ipadx=5, ipady=5, pady=5, padx=5)
         spin_box.bind('<Return>', value_changed)
         spin_box.bind('<Enter>', value_changed)
         return spin_box
@@ -78,7 +82,7 @@ class Interface(Character):
         self.menu = tk.Tk()
         self.name = tk.Entry(self.menu, font=("Arial", 14))
         self.army = tk.Entry(self.menu, font=("Arial", 14))
-        self.point_spent = tk.Label(self.menu,font=("Arial", 14), text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
+        self.point_spent = tk.Label(self.menu, font=("Arial", 14), text=f'Points:{self.Spent_Points}/{self.MAX_POINTS}')
 
         self.menu.title('Quest')
         # Making a Window
@@ -106,6 +110,7 @@ class Interface(Character):
         visual_seperation = 0
         for name in self.ArmyStats:
             self.army_list.append(self.construct_stats(name=name, row=visual_seperation + 3, column=4))
+            self.construct_text(name=Army_Calculation[name], row=visual_seperation + 3, column=5)
             visual_seperation = visual_seperation + 2
 
         self.button = tk.Button(self.menu, text="Print Json")
